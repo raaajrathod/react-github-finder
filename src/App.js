@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import Navbar from "./components/layouts/Navbar";
 import Alert from "./components/layouts/Alert";
 import Users from "./components/users/Users";
+import User from "./components/users/User";
 import Search from "./components/users/Search";
 import Clear from "./components/users/Clear";
 import About from "./components/pages/About";
@@ -12,6 +13,8 @@ import "./App.css";
 class App extends Component {
   state = {
     users: [],
+    user: {},
+    repos : [],
     loading: false,
     alert: null
   };
@@ -40,6 +43,34 @@ class App extends Component {
     this.setState({loading: false, users: res.data.items});
   };
 
+  // Get Single Git hub user
+  getUser = async userName => {
+    this.setState({loading: true});
+
+    const res = await axios.get(
+      `https://api.github.com/users/${userName}?client_id=${
+        process.env.REACT_APP_GITHUB_CLIENT_ID
+      }&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
+    );
+    console.log(process.env.REACT_APP_GITHUB_CLIENT_ID);
+    console.log(res);
+    this.setState({loading: false, user: res.data});
+  };
+
+
+  // Get User Repos 
+  getRepos = async userName => {
+    this.setState({loading: true});
+ 
+    const res = await axios.get(
+      `https://api.github.com/users/${userName}/repos?per_page=5&sorts=created:asc&client_id=${
+        process.env.REACT_APP_GITHUB_CLIENT_ID
+      }&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
+    );
+    console.log(process.env.REACT_APP_GITHUB_CLIENT_ID);
+    console.log(res);
+    this.setState({loading: false, repos: res.data});
+  }; 
   // Clear Users
 
   clearUsers = () => {
@@ -59,7 +90,7 @@ class App extends Component {
   };
 
   render() {
-    const {users, loading, alert} = this.state;
+    const {users, loading, alert, user, repos} = this.state;
     return (
       <Router>
         <div className='App'>
@@ -84,9 +115,22 @@ class App extends Component {
                   </Fragment>
                 )}
               />
+              <Route exact path='/about' component={About} />
 
-              <Route exact path="/about" component={About} />
-              >
+              <Route
+                exact
+                path='/user/:login'
+                render={props => (
+                  <User
+                    {...props}
+                    getUser={this.getUser}
+                    user={user}
+                    loading={loading}
+                    getRepos={this.getRepos}
+                    repos={repos}
+                  />
+                )}
+              />
             </Switch>
           </div>
         </div>

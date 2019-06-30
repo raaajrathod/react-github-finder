@@ -5,7 +5,7 @@ export class Clear extends Component {
         const {showthisBtn,clearUsers}=this.props;
         
     if (showthisBtn) {
-      return (
+      return (  
         <div>
           <button
             className='btn btn-block btn-light'
