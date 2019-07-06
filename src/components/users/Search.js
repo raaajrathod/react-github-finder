@@ -1,51 +1,47 @@
-import React, {Component} from "react";
+import React, {useState} from "react";
 import PropTypes from "prop-types";
 
-class Search extends Component {
-  state = {
-    text: ""
+const Search = props => {
+  const [text, setText] = useState("");
+
+  const onChange = e => {
+    setText(e.target.value);
   };
 
-  static propTypes = {
-    searchUsers: PropTypes.func.isRequired,
-    showAlert: PropTypes.func.isRequired
-  };
-
-  onChange = e => {
-    this.setState({[e.target.name]: e.target.value});
-  };
-
-  onSubmit = e => {
+  const onSubmit = e => {
     e.preventDefault();
-
-    if (this.state.text === "") {
-      this.props.showAlert("Please Enter Something", "light");
+    if (text === "") {
+      props.showAlert("Please Enter Something", "light");
     } else {
-      console.log(this.state.text);
-      this.props.searchUsers(this.state.text);
-      this.setState({text: ""});
+      console.log(text);
+      props.searchUsers(text);
+      setText("");
     }
   };
-  render() {
-    return (
-      <div>
-        <form onSubmit={this.onSubmit} action='' className='form'>
-          <input
-            type='text'
-            name='text'
-            placeholder='Search Users...'
-            value={this.state.text}
-            onChange={this.onChange}
-          />
-          <input
-            type='submit'
-            value='Search'
-            className='btn btn-dark btn-block'
-          />
-        </form>
-      </div>
-    );
-  }
-}
+
+  return (
+    <div>
+      <form onSubmit={onSubmit} action='' className='form'>
+        <input
+          type='text'
+          name='text'
+          placeholder='Search Users...'
+          value={text}
+          onChange={onChange}
+        />
+        <input
+          type='submit'
+          value='Search'
+          className='btn btn-dark btn-block'
+        />
+      </form>
+    </div>
+  );
+};
+
+Search.propTypes = {
+  searchUsers: PropTypes.func.isRequired,
+  showAlert: PropTypes.func.isRequired
+};
 
 export default Search;

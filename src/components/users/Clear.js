@@ -1,23 +1,19 @@
-import React, {Component} from "react";
+import React from "react";
 
-export class Clear extends Component {
-    render() {
-        const {showthisBtn,clearUsers}=this.props;
-        
-    if (showthisBtn) {
-      return (  
-        <div>
-          <button
-            className='btn btn-block btn-light'
-            onClick={clearUsers}>
-            Clear
-          </button>
-        </div>
-      );
-    } else {
-      return "";
-    }
-  } 
-}
+const Clear = props => {
+  const {showthisBtn, clearUsers} = props;
+
+  if (showthisBtn) {
+    return (
+      <div>
+        <button className='btn btn-block btn-light' onClick={clearUsers}>
+          Clear
+        </button>
+      </div>
+    );
+  } else {
+    return "";
+  }
+};
 
 export default Clear;
