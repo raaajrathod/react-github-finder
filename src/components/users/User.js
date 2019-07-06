@@ -1,4 +1,4 @@
-import React, {Fragment, Component, useEffect} from "react";
+import React, {Fragment, useEffect} from "react";
 import Spinner from "../spinner/Spinner";
 import Repos from "../repos/Repos";
 import PropTypes from "prop-types";
