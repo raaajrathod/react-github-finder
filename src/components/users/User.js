@@ -1,13 +1,14 @@
-import React, {Fragment, useEffect} from "react";
+import React, {Fragment, useEffect, useContext} from "react";
 import Spinner from "../spinner/Spinner";
 import Repos from "../repos/Repos";
-import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
+import GithubContext from "../../context/github/githubContext";
 
 const User = props => {
+  const githubContext = useContext(GithubContext);
   // Destructing Props
-  const {getUser, getRepos, user, loading, repos, match} = props;
-
+  const {getUser, getRepos, user, loading, repos} = githubContext;
+  const {match} = props;
   useEffect(() => {
     getUser(match.params.login);
     getRepos(match.params.login);
@@ -63,7 +64,11 @@ const User = props => {
                 <p>{bio}</p>
               </Fragment>
             )}
-            <a href={html_url} className='btn btn-dark my-1'>
+            <a
+              href={html_url}
+              rel='noopener noreferrer'
+              target='_blank'
+              className='btn btn-dark my-1'>
               Visit Github Profile
             </a>
             <ul>
@@ -103,13 +108,6 @@ const User = props => {
       </Fragment>
     );
   }
-};
-
-User.propTypes = {
-  loading: PropTypes.bool,
-  user: PropTypes.object.isRequired,
-  getUser: PropTypes.func.isRequired,
-  getRepos: PropTypes.func.isRequired
 };
 
 export default User;
